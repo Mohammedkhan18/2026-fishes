@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All The Fishes</title>  
+</head>
+<body>
+    <script type="module">
+
+        //All of our Pixi code 
+
+        //Import Pixi
+
+        import {Application, Sprite, Assets, Container} from './js/pixi.js'; 
+
+        // Create new app
+        const app = new Application(); 
+
+        // Initialize the app
+        await app.init({ 
+            width: 640, 
+            height: 480,
+            background: 0x1099bb 
+        }); 
+
+        document.body.appendChild(app.canvas); 
+
+        // Load in the fish
+        const texture = await Assets.load("img/fish.png"); 
+
+        // Create new Sprite from fish
+        const fishsprite1 = new Sprite(texture); 
+            fishsprite1.scale.set(.5);  
+            fishsprite1.x = 0;
+            fishsprite1.y = 0; 
+            fishsprite1.angle = 0; 
+            fishsprite1.anchor.set(.15,.5); 
+
+        // Create container
+        const fish1 = new Container(); 
+        fish1.x = 200; 
+        fish1.y = 200; 
+
+        // Add fishsprite to container
+
+        fish1.addChild(fishsprite1); 
+
+        // Add fish sprite to stage
+        app.stage.addChild(fish1); 
+
+        // Animation ticker
+        app.ticker.add((time) => {
+            // fish bobbing
+            fishsprite1.y = (Math.sin(time.lastTime / 600) * 30); 
+           
+
+            // fish flapping
+
+            let flap = .5 + (Math.sin(time.lastTime / 30) * .005); 
+            fishsprite1.scale.x = flap;
+
+            // fish head turn
+
+            let turn = -(Math.cos(time.lastTime / 600) * 5)
+
+            fishsprite1.angle = turn; 
+            
+        }); 
+
+
+
+
+
+    </script>
+</body>
+</html>
