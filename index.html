@@ -5,13 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All The Fishes</title>  
 </head>
-<body>
-    <script type="module">
 
+<body>
+    <style>
+
+        body {
+            
+            background-color: lightblue;       
+        }
+        canvas {
+            border: 4px solid skyblue;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5); 
+            border-radius: 30px;
+        }
+    </style>
+
+    <script type="module">
         //All of our Pixi code 
 
         //Import Pixi
-
         import {Application, Sprite, Assets, Container} from './js/pixi.js'; 
 
         // Create new app
@@ -26,52 +38,159 @@
 
         document.body.appendChild(app.canvas); 
 
-        // Load in the fish
+        // Load in the assets
         const texture = await Assets.load("img/fish.png"); 
-
-        // Create new Sprite from fish
+        const background = await Assets.load("img/bg.png");
+        const plants = await Assets.load("img/plant.jpg");
+        const texture2 = await Assets.load("img/fish2.jpg"); 
+        const texture3 = await Assets.load("img/fish3.jpg"); 
+         
+        // Create Sprite for first fish
         const fishsprite1 = new Sprite(texture); 
-            fishsprite1.scale.set(.5);  
-            fishsprite1.x = 0;
-            fishsprite1.y = 0; 
-            fishsprite1.angle = 0; 
-            fishsprite1.anchor.set(.15,.5); 
+        fishsprite1.scale.set('.5'); 
+        fishsprite1.x = 0;
+        fishsprite1.y = 0; 
+        fishsprite1.angle = 0; 
+        fishsprite1.anchor.set(.15,.5); 
 
-        // Create container
+        // Create Sprite for second fish
+        const fishsprite2 = new Sprite(texture2); 
+        fishsprite2.scale.set('.5'); 
+        fishsprite2.x = 0;
+        fishsprite2.y = 0; 
+        fishsprite2.angle = 0; 
+        fishsprite2.anchor.set(.15,.5); 
+
+        // Create Sprite for third fish
+        const fishsprite3 = new Sprite(texture3); 
+        fishsprite3.scale.set('.5'); 
+        fishsprite3.x = 0;
+        fishsprite3.y = 0; 
+        fishsprite3.angle = 0; 
+        fishsprite3.anchor.set(.15,.5); 
+
+        // Create Sprite from background
+        const ocean = new Sprite(background); 
+        ocean.scale.set('.5'); 
+        ocean.x = 0;
+        ocean.y = 0; 
+        ocean.angle = 0; 
+        ocean.anchor.set(.15,.5); 
+        ocean.width = 900;
+        ocean.height = 1000;
+
+        // Create Sprite from plants
+        const plant1 = new Sprite(plants); 
+        plant1.scale.set('.2'); 
+        plant1.x = 480;
+        plant1.y = 340; 
+        plant1.angle = 0; 
+        plant1.anchor.set(.5); 
+        plant1.width = 300;
+        plant1.height = 300; 
+
+        // --- FISH 1 SETUP (Bottom Lane) ---
         const fish1 = new Container(); 
-        fish1.x = 200; 
-        fish1.y = 200; 
+        fish1.x = 100; 
+        fish1.y = 380;   
+        fish1.scale.set(0.2); 
+        fish1.vx = 2;    
+        fish1.vy = 0.4;  
 
-        // Add fishsprite to container
+        // --- FISH 2 SETUP (Top Lane) ---
+        const fish2 = new Container(); 
+        fish2.x = 400;  
+        fish2.y = 100;   
+        fish2.scale.set(0.3);  
+        fish2.vx = -1.5;
+        fish2.vy = -0.3;  
 
+        // --- FISH 3 SETUP (Middle Lane) ---
+        const fish3 = new Container(); 
+        fish3.x = 250;  
+        fish3.y = 240;   
+        fish3.scale.set(0.25); 
+        fish3.vx = 1.7;  
+        fish3.vy = 0.3;  
+
+        // Add fish sprites to containers
         fish1.addChild(fishsprite1); 
+        fish2.addChild(fishsprite2); 
+        fish3.addChild(fishsprite3); 
 
-        // Add fish sprite to stage
+        // Add fish containers to stage
         app.stage.addChild(fish1); 
+        app.stage.addChild(fish2); 
+        app.stage.addChild(fish3); 
+
+        // Add background and plants
+        app.stage.addChildAt(ocean, 0); 
+        app.stage.addChildAt(plant1, 1); 
 
         // Animation ticker
-        app.ticker.add((time) => {
-            // fish bobbing
-            fishsprite1.y = (Math.sin(time.lastTime / 600) * 30); 
-           
+        app.ticker.add((time) => { 
 
-            // fish flapping
+            // fish 1 animation 
+            fish1.x += fish1.vx;
+            fish1.y += fish1.vy;
 
-            let flap = .5 + (Math.sin(time.lastTime / 30) * .005); 
-            fishsprite1.scale.x = flap;
-
-            // fish head turn
-
-            let turn = -(Math.cos(time.lastTime / 600) * 5)
-
-            fishsprite1.angle = turn; 
+            if (fish1.x > 590 && fish1.vx > 0) fish1.vx = fish1.vx * -1;
+            if (fish1.x < 40 && fish1.vx < 0) fish1.vx = fish1.vx * -1;
             
+            if (fish1.y > 440 && fish1.vy > 0) fish1.vy = fish1.vy * -1; 
+            if (fish1.y < 320 && fish1.vy < 0) fish1.vy = fish1.vy * -1; 
+
+            fishsprite1.y = (Math.sin(time.lastTime / 600) * 30); 
+            fishsprite1.angle = -(Math.cos(time.lastTime / 600) * 5);
+            let flap1 = 0.5 + (Math.sin(time.lastTime / 30) * 0.005); 
+            
+            if (fish1.vx < 0) {
+                fishsprite1.scale.x = flap1;      
+            } else {
+                fishsprite1.scale.x = flap1 * -1; 
+            }
+
+            // fish 2 animation
+            fish2.x += fish2.vx; 
+            fish2.y += fish2.vy; 
+    
+            if (fish2.x > 590 && fish2.vx > 0) fish2.vx = fish2.vx * -1;
+            if (fish2.x < 40 && fish2.vx < 0) fish2.vx = fish2.vx * -1;
+            
+            if (fish2.y > 160 && fish2.vy > 0) fish2.vy = fish2.vy * -1;
+            if (fish2.y < 40 && fish2.vy < 0) fish2.vy = fish2.vy * -1;
+    
+            fishsprite2.y = (Math.sin((time.lastTime + 500) / 600) * 30); 
+            fishsprite2.angle = -(Math.cos((time.lastTime + 500) / 600) * 5);
+            let flap2 = 0.5 + (Math.sin((time.lastTime + 500) / 30) * 0.005);
+            
+            if (fish2.vx > 0) {
+                fishsprite2.scale.x = flap2;      
+            } else {
+                fishsprite2.scale.x = flap2 * -1; 
+            }
+
+            // fish 3 animation 
+            fish3.x += fish3.vx; 
+            fish3.y += fish3.vy; 
+    
+            if (fish3.x > 590 && fish3.vx > 0) fish3.vx = fish3.vx * -1;
+            if (fish3.x < 40 && fish3.vx < 0) fish3.vx = fish3.vx * -1;
+            
+            if (fish3.y > 300 && fish3.vy > 0) fish3.vy = fish3.vy * -1;
+            if (fish3.y < 180 && fish3.vy < 0) fish3.vy = fish3.vy * -1;
+    
+            fishsprite3.y = (Math.sin((time.lastTime + 1200) / 600) * 30); 
+            fishsprite3.angle = -(Math.cos((time.lastTime + 1200) / 600) * 5);
+            let flap3 = 0.5 + (Math.sin((time.lastTime + 1200) / 30) * 0.005);
+            
+            if (fish3.vx > 0) {
+                fishsprite3.scale.x = flap3 * -1;     
+            } else {
+                fishsprite3.scale.x = flap3;      
+            }
+
         }); 
-
-
-
-
-
-    </script>
+    </script> 
 </body>
 </html>
