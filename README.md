@@ -11,6 +11,6 @@ An aquarium scene built using PixiJS.
 
 ## Citing my Assets
 
-* **Fishes Asset (`fish.png`):** [Vecteezy]
+* **Fishes Asset:** [Vecteezy]
 * **Background Ocean Texture (`bg.png`):** [https://unsplash.com/photos/clear-blue-body-of-water-XexawgzYOBc]
 * **Plant  (`plant.jpg`):** [https://www.vecteezy.com/png/58187841-fresh-vibrant-seaweed-clipart-for-underwater-design-projects]
