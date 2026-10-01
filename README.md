@@ -7,6 +7,7 @@ An aquarium scene built using PixiJS.
 * **Separated Lanes:** To stop the fish from crashing into each other, I gave each one its own zone (top, middle, and bottom) so they never overlap.
 * **Fish movement:** I put each fish in a container with its own vx and vy speeds so they can swim across the screen independently.
 * **Wall Bouncing:** When a fish hits a wall, its speed reverses  and its scale flips so it instantly turns around and faces forward. 
+* **Buttons:** To make one of the fishes to change color and draggable. 
 
 
 ## Citing my Assets
