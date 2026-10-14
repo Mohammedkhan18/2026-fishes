@@ -197,7 +197,6 @@ draw() {
         app.ticker.add((time) => { 
 
             // fish 1 animation 
-            // Fish 1 animation
             if (!fish1Busy) {
 
             fish1.x += fish1.vx;
@@ -222,7 +221,6 @@ draw() {
         }
 
 
-            // fish 2 animation
             // Fish 2 animation
             if (!fish2Busy) {
 
@@ -440,6 +438,8 @@ return new Promise((resolve, reject) => {
 };
 
 
+
+
 // Fish 1 click animation
 fish1.eventMode = 'static';
 fish1.cursor = 'pointer';
@@ -513,6 +513,8 @@ fish2.vy = -0.3;
 
 fish2Busy = false;
 }
+
+
 
 app.stage.eventMode = 'static';
 app.stage.hitArea = app.screen;
