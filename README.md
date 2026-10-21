@@ -10,6 +10,8 @@ An aquarium scene built using PixiJS.
 * **Buttons:** To make one of the fishes to change color and draggable. 
 * **Animations:** Extending the animation to handle scale,rotation, tint, and alpha. Also, I made fish 1 to idly bob around and when clicked it swims up to the surface and then swims back down in its bobbing state. I also made fish 2 to swim over to where i tap on the glass. 
 
+* **Scenes:** Adding two scenes to the system. Scene 1 is the original scene and Scene 2 is a welcome to ocean scene. 
+
 
 ## Citing my Assets
 
