@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenes</title>
+</head>
+<body>
+
+<script type="module">
+
+//All of our Pixi code goes here.
+
+//Import Pixi
+import {
+    Application,
+    Assets,
+    Sprite,
+    Container,
+    Graphics,
+    Text,
+    TextStyle
+} from './js/pixi.js';
+
+//Import Director
+import {
+    Director
+} from './js/director.js';
+
+//Import BUtton
+import {
+    Button
+} from './js/buttons.js';
+
+import {
+    Animate
+} from './js/animate.js';
+
+//Create new app
+const app = new Application();
+
+//Initialize the app
+await app.init({
+    width:640,
+    height:480,
+    background:0xcc99bb // #1099bb
+});
+document.body.appendChild(app.canvas);
+
+//Initialize the Director
+let director = new Director(app.stage);
+
+//SCENE1
+let scene1 = new Container();
+
+//Add a fish to scene1
+// Load the fish texture.
+const texture = await Assets.load('img/fish.png');
+
+// Create a new Sprite from an image path
+const fishsprite1 = new Sprite(texture);
+      fishsprite1.scale.set(.3);
+
+scene1.addChild(fishsprite1);
+
+//Add button
+let button1 = new Button('Next Fish',200,50);
+    button1.y = 300;
+    button1.on('pointerdown',() => {
+        director.showScene('secondScene',{
+            transition : director.fade
+        });
+    });
+
+scene1.addChild(button1);
+
+
+
+//SCENE2
+let scene2 = new Container();
+
+//Add a fish to scene1
+// Create a new Sprite from an image path
+const fishsprite2 = new Sprite(texture);
+      fishsprite2.scale.set(.3);
+      fishsprite2.x = 300;
+      fishsprite2.tint = 0xff0000;
+
+scene2.addChild(fishsprite2);
+
+//Add button
+let button2 = new Button('Previous Fish',200,50);
+    button2.y = 300;
+    button2.on('pointerdown',() => {
+        director.showScene('firstScene');
+    });
+scene2.addChild(button2);
+
+
+
+
+//Add it to the Director
+director.addScene('firstScene',scene1);
+director.addScene('secondScene',scene2);
+
+
+
+console.log(director);
+
+</script>
+
+</body>
+</html>

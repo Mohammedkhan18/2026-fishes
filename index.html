@@ -26,6 +26,8 @@
         //Import Pixi
         import {Application, Sprite, Assets, Container, Graphics, Text, TextStyle} from './js/pixi.js'; 
 
+        // Import Director
+        import { Director } from './js/director.js';
 
         // Create new app
         const app = new Application(); 
@@ -180,18 +182,61 @@ draw() {
         fish2.addChild(fishsprite2); 
         fish3.addChild(fishsprite3); 
 
-        // Add fish containers to stage
-        app.stage.addChild(fish1); 
-        app.stage.addChild(fish2); 
-        app.stage.addChild(fish3); 
+       
 
-        // Add background and plants
-        app.stage.addChildAt(ocean, 0); 
-        app.stage.addChildAt(plant1, 1); 
 
         let isDraggingFish = false;
         let fish1Busy = false;
         let fish2Busy = false;
+
+        // =====================================
+// FISH FOR SCENE 2
+// =====================================
+
+// Scene 2 fish sprites
+const scene2FishSprite1 = new Sprite(texture);
+const scene2FishSprite2 = new Sprite(texture2);
+const scene2FishSprite3 = new Sprite(texture3);
+
+// Set their sizes
+scene2FishSprite1.scale.set(0.5);
+scene2FishSprite2.scale.set(0.5);
+scene2FishSprite3.scale.set(0.5);
+
+// Set their anchor points
+scene2FishSprite1.anchor.set(0.15, 0.5);
+scene2FishSprite2.anchor.set(0.15, 0.5);
+scene2FishSprite3.anchor.set(0.15, 0.5);
+
+// Scene 2 fish containers
+const scene2Fish1 = new Container();
+const scene2Fish2 = new Container();
+const scene2Fish3 = new Container();
+
+// Starting positions
+scene2Fish1.position.set(100, 150);
+scene2Fish2.position.set(400, 250);
+scene2Fish3.position.set(250, 350);
+
+// Sizes of the fish containers
+scene2Fish1.scale.set(0.2);
+scene2Fish2.scale.set(0.3);
+scene2Fish3.scale.set(0.25);
+
+// Movement speeds
+scene2Fish1.vx = 2;
+scene2Fish1.vy = 0.8;
+
+scene2Fish2.vx = -1.5;
+scene2Fish2.vy = 0.6;
+
+scene2Fish3.vx = 1.7;
+scene2Fish3.vy = -0.7;
+
+// Put each sprite inside its own container
+scene2Fish1.addChild(scene2FishSprite1);
+scene2Fish2.addChild(scene2FishSprite2);
+scene2Fish3.addChild(scene2FishSprite3);
 
         // Animation ticker
         app.ticker.add((time) => { 
@@ -282,7 +327,67 @@ draw() {
                 fishsprite3.scale.x = flap3;      
             }
 
+           
+        // SCENE 2 FISH MOVEMENT
+
+
+        scene2Fish1.x += scene2Fish1.vx;
+        scene2Fish1.y += scene2Fish1.vy;
+
+        if (scene2Fish1.x > 590 || scene2Fish1.x < 40) {
+        scene2Fish1.vx *= -1;
+        }
+
+        if (scene2Fish1.y > 430 || scene2Fish1.y < 60) {
+        scene2Fish1.vy *= -1;
+        }
+
+        // Move Scene 2 fish 2
+        scene2Fish2.x += scene2Fish2.vx;
+        scene2Fish2.y += scene2Fish2.vy;
+
+        if (scene2Fish2.x > 590 || scene2Fish2.x < 40) {
+        scene2Fish2.vx *= -1;
+        }
+
+        if (scene2Fish2.y > 430 || scene2Fish2.y < 60) {
+        scene2Fish2.vy *= -1;
+        }
+
+        // Move Scene 2 fish 3
+        scene2Fish3.x += scene2Fish3.vx;
+        scene2Fish3.y += scene2Fish3.vy;
+
+        if (scene2Fish3.x > 590 || scene2Fish3.x < 40) {
+        scene2Fish3.vx *= -1;
+        }
+        if (scene2Fish3.y > 430 || scene2Fish3.y < 60) {
+        scene2Fish3.vy *= -1;
+        }
+
+        // Scene 2 fish direction
+
+        scene2FishSprite1.scale.x =
+         Math.abs(scene2FishSprite1.scale.x) *
+        (scene2Fish1.vx > 0 ? -1 : 1);
+
+        // Scene 2 Fish 2 direction
+        let flapScene2Fish2 =
+        0.5 + Math.sin((time.lastTime + 500) / 30) * 0.005;
+
+        if (scene2Fish2.vx > 0) {
+         scene2FishSprite2.scale.x = flapScene2Fish2;
+        } else {
+        scene2FishSprite2.scale.x = flapScene2Fish2 * -1;
+        }
+
+        scene2FishSprite3.scale.x =
+        Math.abs(scene2FishSprite3.scale.x) *
+        (scene2Fish3.vx > 0 ? -1 : 1);
+
         }); 
+
+
 
         
        
@@ -338,7 +443,7 @@ fishColorButton.on('pointertap', (e) => {
     fishsprite1.tint = randomColor;
 });
 
-app.stage.addChild(fishColorButton);
+
 
 
 // Extending the animation system
@@ -529,8 +634,96 @@ app.stage.hitArea = app.screen;
 
 app.stage.on('pointerdown', fish2MoveToTap);
 
+// Scenes
+
+let director = new Director(app.stage);
 
 
+// Scene 1
+
+let scene1 = new Container();
+
+// Add original aquarium background and plants
+scene1.addChild(ocean);
+scene1.addChild(plant1);
+
+// Add original fish
+scene1.addChild(fish1);
+scene1.addChild(fish2);
+scene1.addChild(fish3);
+
+// Add original Color button
+scene1.addChild(fishColorButton);
+
+// Create Next Scene button
+let nextButton = new Button("Next Scene", 130, 40);
+
+nextButton.x = 470;
+nextButton.y = 20;
+
+nextButton.on('pointertap', () => {
+    director.showScene('secondScene', {
+        transition: director.fade
+    });
+});
+
+scene1.addChild(nextButton);
+
+
+
+// SCENE 2
+
+
+let scene2 = new Container();
+
+// Create Scene 2 background
+let scene2Background = new Graphics()
+    .rect(0, 0, 640, 480)
+    .fill(0x173b59);
+
+scene2.addChild(scene2Background);
+
+// Add the separate moving fish
+scene2.addChild(scene2Fish1);
+scene2.addChild(scene2Fish2);
+scene2.addChild(scene2Fish3);
+
+// Add Scene 2 title
+let scene2Title = new Text({
+    text: "Welcome to the Ocean!",
+    style: {
+        fontFamily: 'Arial',
+        fontSize: 28,
+        fill: 0xffffff
+    }
+});
+
+scene2Title.anchor.set(0.5);
+scene2Title.x = 320;
+scene2Title.y = 50;
+
+scene2.addChild(scene2Title);
+
+// Create Back button
+let backButton = new Button("Back to Aquarium", 180, 45);
+
+backButton.x = 230;
+backButton.y = 420;
+
+backButton.on('pointertap', () => {
+    director.showScene('firstScene', {
+        transition: director.fade
+    });
+});
+
+scene2.addChild(backButton);
+
+
+director.addScene('firstScene', scene1);
+director.addScene('secondScene', scene2);
+
+// Show the original aquarium first
+director.showScene('firstScene');
 
 
         
